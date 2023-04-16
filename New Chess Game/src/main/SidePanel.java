@@ -10,52 +10,46 @@ import util.AddPiecePanel;
 import util.ChessTimer;
 
 public class SidePanel extends JPanel implements ActionListener{
-	private final int WIDTH = 2 * (Board.BOARD_SIZE / Board.DIMENSION);
+	private final int WIDTH = 200;
 	private final int HEIGHT = Board.BOARD_SIZE;
 
+	JButton Reset_btn = new JButton("Reset Board");
+	JButton addPiece_Btn = new JButton("Add Piece");
 	private JButton StartBlackTimer_btn = new JButton("Pass Turn");
 	private JButton StartWhiteTimer_btn = new JButton("Pass Turn");
-	JButton Start_btn = new JButton("Reset Board");
-	JButton addPiece_Btb = new JButton("Add Piece");
 
 	private ChessTimer White_timer = new ChessTimer();
 	private ChessTimer Black_timer = new ChessTimer();
 
-	JComboBox<String> Game_duration_rd = new JComboBox<>();
+	private JComboBox<String> Game_duration_cb = new JComboBox<>();
+	private long duration;
 
-	AddPiecePanel AddPiece_pn = new AddPiecePanel();
+	private AddPiecePanel AddPiece_pn = new AddPiecePanel();
 
-	// 
+	private int turnCircle_pos;
 	
 	SidePanel(){		
 		this.setLayout(null);
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		
 		// Start Game button
-		this.add(Start_btn);
-		Dimension Start_btn_size = Start_btn.getPreferredSize();
-		Start_btn.setBounds((WIDTH - (Start_btn_size.width)) / 2, (HEIGHT - Start_btn_size.height) /2, Start_btn_size.width, Start_btn_size.height);
+		this.add(Reset_btn);
+		Dimension Reset_btn_size = Reset_btn.getPreferredSize();
+		Reset_btn.setBounds((WIDTH - (Reset_btn_size.width)) / 2, (HEIGHT - Reset_btn_size.height) /2, Reset_btn_size.width, Reset_btn_size.height);
 		
 
 		// set game duration
-		Game_duration_rd.addItem("Choose Game Length");
-		Game_duration_rd.addItem("1 Min");
-		Game_duration_rd.addItem("3 Min");
-		Game_duration_rd.addItem("5 Min");
-		Game_duration_rd.addItem("10 Min");
-		this.add(Game_duration_rd);
-		Game_duration_rd.setBounds((WIDTH - Game_duration_rd.getPreferredSize().width)/ 2, 4*(WIDTH/2) + 18, Game_duration_rd.getPreferredSize().width, Game_duration_rd.getPreferredSize().height);
+		Game_duration_cb.addItem("Choose Game Length");
+		Game_duration_cb.addItem("1 Min");
+		Game_duration_cb.addItem("3 Min");
+		Game_duration_cb.addItem("5 Min");
+		Game_duration_cb.addItem("10 Min");
+		Game_duration_cb.addItem("15 Min");
+		Game_duration_cb.addItem("30 Min");
+		this.add(Game_duration_cb);
+		Game_duration_cb.setBounds((WIDTH - Game_duration_cb.getPreferredSize().width)/ 2, 4*(WIDTH/2) + 18, Game_duration_cb.getPreferredSize().width, Game_duration_cb.getPreferredSize().height);
 		
 
-		// White time clock display
-		this.add(White_timer);
-		White_timer.setLocation((WIDTH - White_timer.getPreferredSize().width) / 2 , 7*(WIDTH/2) - (White_timer.getPreferredSize().height / 2));
-		// White's pass turn button
-		this.add(StartBlackTimer_btn);
-		Dimension StartBlackTimer_btn_size = StartBlackTimer_btn.getPreferredSize();
-		StartBlackTimer_btn.setBounds((WIDTH - (StartBlackTimer_btn_size.width)) / 2, (7*WIDTH - StartBlackTimer_btn_size.height) / 2 - 30, StartBlackTimer_btn_size.width, StartBlackTimer_btn_size.height);	
-		
-		
 		// Black time clock display
 		Black_timer.setAlignmentX(SwingConstants.CENTER);
 		this.add(Black_timer);
@@ -64,7 +58,15 @@ public class SidePanel extends JPanel implements ActionListener{
 		this.add(StartWhiteTimer_btn);
 		Dimension StartWhiteTimer_btn_size = StartWhiteTimer_btn.getPreferredSize();
 		StartWhiteTimer_btn.setBounds((WIDTH - (StartWhiteTimer_btn_size.width)) / 2, 1*(WIDTH/2) - (StartWhiteTimer_btn_size.height / 2) + 30, StartWhiteTimer_btn_size.width, StartWhiteTimer_btn_size.height);
-	
+
+
+		// White time clock display
+		this.add(White_timer);
+		White_timer.setLocation((WIDTH - White_timer.getPreferredSize().width) / 2 , 7*(WIDTH/2) - (White_timer.getPreferredSize().height / 2));
+		// White's pass turn button
+		Dimension StartBlackTimer_btn_size = StartBlackTimer_btn.getPreferredSize();
+		StartBlackTimer_btn.setBounds((WIDTH - (StartBlackTimer_btn_size.width)) / 2, (7*WIDTH - StartBlackTimer_btn_size.height) / 2 - 30, StartBlackTimer_btn_size.width, StartBlackTimer_btn_size.height);	
+			
 		
 		// Add-piece button
 		this.add(AddPiece_pn);
@@ -72,19 +74,32 @@ public class SidePanel extends JPanel implements ActionListener{
 
 
 		// Register Listener
-		Game_duration_rd.addActionListener(this);
+		Reset_btn.addActionListener(this);
+		Game_duration_cb.addActionListener(this);
 		StartBlackTimer_btn.addActionListener(this);
 		StartWhiteTimer_btn.addActionListener(this);
 	
 	}
-	
-	void startClock() {
-		White_timer.startTimer();
-		Black_timer.startTimer();
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		if (turnCircle_pos != 0 && duration != 0){
+			Graphics2D g2d = (Graphics2D) g; // Explicit casting
+			g2d.setStroke(new BasicStroke(3));
+			g2d.setColor(Color.GREEN);
+			g2d.drawOval((WIDTH - 30) / 2, turnCircle_pos, 30, 30);
+			g2d.setStroke(new BasicStroke()); // set stroke back to defualt (only applying stroke size to oval and not all other components)
+		}
+	}
+
+	private void innitializeTurnBtn(){
+		this.remove(StartBlackTimer_btn);
+		this.add(StartWhiteTimer_btn);
 	}
 	
-	long getDuration(String d) {
-		long l = 0; // Default value of l, no more need for default switch case
+	public long getDuration(String d) {
+		long l = 0;
 		switch(d) {
 			case "1 Min": l = 60000; 
 				break;
@@ -94,6 +109,14 @@ public class SidePanel extends JPanel implements ActionListener{
 				break;
 			case "10 Min": l = 10 * 60000;
 				break;
+			case "15 Min": l = 15 *60000; 
+				break;
+			case "30 Min": l = 30 * 60000;
+				break;
+			case "60 Min": l = 60 * 60000;
+				break;
+			default:
+				break;
 		}
 		
 		return l;
@@ -101,24 +124,51 @@ public class SidePanel extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == Game_duration_rd) {
-			System.out.println(Game_duration_rd.getSelectedItem().toString());
-			long duration = getDuration(Game_duration_rd.getSelectedItem().toString());
+
+		if (e.getSource() == Reset_btn){
+			turnCircle_pos = 0;
+			duration = 0;
+			White_timer.setDuration(duration);
+			Black_timer.setDuration(duration);
+			Game_duration_cb.setSelectedIndex(0);
+			
+			innitializeTurnBtn();
+			this.repaint();
+		}
+
+		if (e.getSource() == Game_duration_cb) {
+			turnCircle_pos = 0;
+			duration  = getDuration(Game_duration_cb.getSelectedItem().toString());
 			White_timer.setDuration(duration);
 			Black_timer.setDuration(duration);
 
 			White_timer.stopTimer();
 			Black_timer.stopTimer();
+			innitializeTurnBtn();
 		}
 		
 		if (e.getSource() == StartBlackTimer_btn) {
+			if (duration != 0){
+				this.remove(StartBlackTimer_btn);
+				this.add(StartWhiteTimer_btn);
+			}
 			White_timer.stopTimer();			
 			Black_timer.startTimer();
+
+			turnCircle_pos = 1*(WIDTH - 30) / 2 - 40;
+			repaint();
 		}
 		
 		if (e.getSource() == StartWhiteTimer_btn) {
+			if (duration != 0){
+				this.remove(StartWhiteTimer_btn);
+				this.add(StartBlackTimer_btn);
+			}
 			Black_timer.stopTimer();			
 			White_timer.startTimer();
+
+			turnCircle_pos = 8*(WIDTH - 30) / 2 +40;
+			repaint();
 		}
 	}
 }

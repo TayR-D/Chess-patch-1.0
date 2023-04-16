@@ -30,7 +30,7 @@ public class Square extends JPanel{
 		return innerPiece;
 	}
 	
-	public void Set_Piece(Pieces p){
+	public void Set_Piece(Pieces p){ // implicit casting
 		this.add(p);
 		innerPiece = p;
 

@@ -11,20 +11,20 @@ import main.Pieces;
 import pieces.*;
 
 public class AddPiecePanel extends JPanel implements ActionListener{
-    JButton addWhitePiece_btn = new JButton("Add White Piece");
-    JButton addBlackPiece_btn = new JButton("Add Black Piece");
-    JButton ok_btn = new JButton("OK");
+    private JButton addWhitePiece_btn = new JButton("Add White Piece");
+    private JButton addBlackPiece_btn = new JButton("Add Black Piece");
+    private JButton ok_btn = new JButton("OK");
 
-    ButtonGroup pieceChoices_ButtonGroup = new ButtonGroup();
+    private ButtonGroup pieceChoices_ButtonGroup = new ButtonGroup();
 
-    JRadioButton king_Choice = new JRadioButton("King");
-    JRadioButton queen_Choice = new JRadioButton("Queen");
-    JRadioButton rook_Choice = new JRadioButton("Rook");
-    JRadioButton bishop_Choice = new JRadioButton("Bishop");
-    JRadioButton horse_Choice = new JRadioButton("Horse");
-    JRadioButton pawn_Choice = new JRadioButton("Pawn");
+    private JRadioButton king_Choice = new JRadioButton("King");
+    private JRadioButton queen_Choice = new JRadioButton("Queen");
+    private JRadioButton rook_Choice = new JRadioButton("Rook");
+    private JRadioButton bishop_Choice = new JRadioButton("Bishop");
+    private JRadioButton horse_Choice = new JRadioButton("Horse");
+    private JRadioButton pawn_Choice = new JRadioButton("Pawn");
 
-    boolean isWhite;
+    private boolean isWhite;
 
     public AddPiecePanel(){
         this.setLayout(new FlowLayout());
@@ -54,7 +54,7 @@ public class AddPiecePanel extends JPanel implements ActionListener{
         ok_btn.addActionListener(this);
     }
 
-    void addChoices(){
+    private void addChoices(){
         this.add(king_Choice);
         this.add(queen_Choice);
         this.add(rook_Choice);
@@ -64,7 +64,7 @@ public class AddPiecePanel extends JPanel implements ActionListener{
         SwingUtilities.updateComponentTreeUI(this);
     }
 
-    void warnPlayer(){
+    private void warnPlayer(){
         pieceChoices_ButtonGroup.clearSelection();
         this.removeAll();
         this.add(new JLabel("No Free Sqaure"));
@@ -73,7 +73,7 @@ public class AddPiecePanel extends JPanel implements ActionListener{
         SwingUtilities.updateComponentTreeUI(this);
     }
 
-    void addPieceToBoard(Pieces p){
+    private void addPieceToBoard(Pieces p){
         Board.getAvailableSquare().Set_Piece(p);
         System.out.println("piece setted");  
         

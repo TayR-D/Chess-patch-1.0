@@ -7,28 +7,26 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Pieces extends JPanel{
+public abstract class Pieces extends JLabel{
 	private Map<String, ImageIcon> PiecesIcon = new HashMap<>() {{
 		// White pieces (isWhite = true)
-		put("WKing", new ImageIcon("New Chess Game/res/PieceIcon/WKingIcon.png"));
-		put("WQueen", new ImageIcon("New Chess Game/res/PieceIcon/WQueenIcon.png"));
-		put("WRook", new ImageIcon("New Chess Game/res/PieceIcon/WRookIcon.png"));
-		put("WBishop", new ImageIcon("New Chess Game/res/PieceIcon/WBishopIcon.png"));
-		put("WHorse", new ImageIcon("New Chess Game/res/PieceIcon/WHorseIcon.png"));
-		put("WPawn", new ImageIcon("New Chess Game/res/PieceIcon/WPawnIcon.png"));
+		put("WKing", new ImageIcon("res/PieceIcon/WKingIcon.png"));
+		put("WQueen", new ImageIcon("res/PieceIcon/WQueenIcon.png"));
+		put("WRook", new ImageIcon("res/PieceIcon/WRookIcon.png"));
+		put("WBishop", new ImageIcon("res/PieceIcon/WBishopIcon.png"));
+		put("WHorse", new ImageIcon("res/PieceIcon/WHorseIcon.png"));
+		put("WPawn", new ImageIcon("res/PieceIcon/WPawnIcon.png"));
 		
 		// Black Pieces (isWhite = false)
-		put("BKing", new ImageIcon("New Chess Game/res/PieceIcon/BKingIcon.png"));
-		put("BQueen", new ImageIcon("New Chess Game/res/PieceIcon/BQueenIcon.png"));
-		put("BRook", new ImageIcon("New Chess Game/res/PieceIcon/BRookIcon.png"));
-		put("BBishop", new ImageIcon("New Chess Game/res/PieceIcon/BBishopIcon.png"));
-		put("BHorse", new ImageIcon("New Chess Game/res/PieceIcon/BHorseIcon.png"));
-		put("BPawn", new ImageIcon("New Chess Game/res/PieceIcon/BPawnIcon.png"));		
+		put("BKing", new ImageIcon("res/PieceIcon/BKingIcon.png"));
+		put("BQueen", new ImageIcon("res/PieceIcon/BQueenIcon.png"));
+		put("BRook", new ImageIcon("res/PieceIcon/BRookIcon.png"));
+		put("BBishop", new ImageIcon("res/PieceIcon/BBishopIcon.png"));
+		put("BHorse", new ImageIcon("res/PieceIcon/BHorseIcon.png"));
+		put("BPawn", new ImageIcon("res/PieceIcon/BPawnIcon.png"));		
 	}};
 	
 	protected int size = Board.BOARD_SIZE /Board.DIMENSION;
-	protected int x_pos = 0;
-	protected int y_pos = 0;
 	
 	protected String pieceIcon_key;
 	protected Image pieceImage;
@@ -51,11 +49,11 @@ public abstract class Pieces extends JPanel{
     
     protected void paintComponent(Graphics g) {
     	super.paintComponent(g);
-    	g.drawImage(pieceImage, x_pos, y_pos, null);
+    	g.drawImage(pieceImage, 0, 0, null);
     }
       
     public Image getPieceImage() {
-    	return pieceImage;
+		return pieceImage;
     }
     
     public String getPieceName() {

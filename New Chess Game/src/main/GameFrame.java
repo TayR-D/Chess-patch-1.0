@@ -5,11 +5,11 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class GameFrame extends JFrame implements ActionListener, MouseListener, MouseMotionListener{		
-	JPanel board = new Board();
-	SidePanel Side_panel = new SidePanel();
+public class GameFrame extends JFrame implements ActionListener{		
+	private Board board = new Board();
+	private SidePanel Side_panel = new SidePanel();
 	
-    ImageIcon FrameIcon = new ImageIcon("New Chess Game/res/GameIcon/BlackHorse_GameIcon.png");
+    private ImageIcon FrameIcon = new ImageIcon("New Chess Game/res/GameIcon/BlackHorse_GameIcon.png");
     
     public GameFrame(){
         // CreateFrame
@@ -23,12 +23,12 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener, 
                 
         
         // Register listener
-        Side_panel.Start_btn.addActionListener(this);
+        Side_panel.Reset_btn.addActionListener(this);
 
         this.setIconImage(FrameIcon.getImage());
         this.pack(); // Make the frame itself adjust the size to fit all components
         this.setVisible(true);
-        this.setResizable(true);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
         
     }
@@ -38,30 +38,9 @@ public class GameFrame extends JFrame implements ActionListener, MouseListener, 
 		if (e.getActionCommand() == "Reset Board") {
 			this.remove(board);
 			board = new Board();
-			
 			this.add(board, BorderLayout.CENTER);
+			
 			SwingUtilities.updateComponentTreeUI(this);
 		}		
 	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {}
-
-	@Override
-	public void mousePressed(MouseEvent e) {}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-
-	@Override
-	public void mouseExited(MouseEvent e) {}
 }

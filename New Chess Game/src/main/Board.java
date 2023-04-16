@@ -2,12 +2,7 @@ package main;
 
 import javax.swing.*;
 
-import pieces.Bishop;
-import pieces.Horse;
-import pieces.King;
-import pieces.Pawn;
-import pieces.Queen;
-import pieces.Rook;
+import pieces.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -16,19 +11,19 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 	public static final int DIMENSION = 8;
 	public static final int BOARD_SIZE = 800;
 	
-	private static Square[][] SquareGrid = new Square[DIMENSION][DIMENSION];
+	public static Square[][] SquareGrid = new Square[DIMENSION][DIMENSION];
 	
 	private Color lightColor = new Color(193, 154, 109);
     private Color darkColor = new Color(118, 74, 52);
-	private Pieces Focused_piece;
+	private Pieces Focused_piece; 
 	private Square Focused_sq;
 	private int x_pos;
 	private int y_pos;
 
-    Board(){    	
-        setLayout(new GridLayout(DIMENSION, DIMENSION));
-        this.setPreferredSize(new Dimension(BOARD_SIZE, BOARD_SIZE));
-        
+    public Board(){    	
+		this.setLayout(new GridLayout(DIMENSION, DIMENSION));
+		this.setPreferredSize(new Dimension(BOARD_SIZE, BOARD_SIZE));
+
         innitializeSquare();
         innitializePieces();
         
@@ -84,7 +79,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 		getSquare(1, 8).Set_Piece(new Rook(false));
     }
     
-    // Create a new instance of Square and set an appropriate color for each grid
+    // Create a new instance of Square and set an appropriate color
     void makeSquare(int i, int j, boolean lightTile){
     	Square newSquare_panel = new Square(i, j);
     	
@@ -101,11 +96,8 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
     public Square getSquare(int row, int col) {
     	return SquareGrid[row -1][col -1];
     }
-
-	public Square[][] getSquareArray(){
-		return SquareGrid;
-	}
-
+	
+	// Search through all square and find the first one with no piece inside, used when adding new piece
 	public static Square getAvailableSquare(){
 		Square available_sq = null;
 		for (Square[] each_row: SquareGrid){
@@ -118,6 +110,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 		return available_sq;
 	}
     
+	// use method getSquare() to asign the squre under curser to variable Focused_sq
     private void checkSquare(int x_pos, int y_pos) {
     	int row = Math.ceilDiv(y_pos, (BOARD_SIZE/DIMENSION));
     	int col = Math.ceilDiv(x_pos, (BOARD_SIZE/DIMENSION));
@@ -127,9 +120,8 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 
     public void paint(Graphics g) {
     	super.paint(g);
-		Graphics2D g2d = (Graphics2D) g;
     	if (Focused_piece != null) {
-    		g2d.drawImage(Focused_piece.getPieceImage(), x_pos - (Focused_piece.getPieceSize() / 2), y_pos - (Focused_piece.getPieceSize() / 2), null);	
+    		g.drawImage(Focused_piece.getPieceImage(), x_pos - (Focused_piece.getPieceSize() / 2), y_pos - (Focused_piece.getPieceSize() / 2), null);	
     	}
     }
     
@@ -152,8 +144,6 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 				y_pos = e.getY();
 				Focused_piece = Focused_sq.getInnerPiece();
 				Focused_sq.Remove_Piece(Focused_piece);
-
-				System.out.println(Focused_piece.getPieceName() + " is pressed");
 				
 				this.repaint();
 			}
@@ -168,7 +158,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 			if (Focused_piece != null){
 				try {
 					checkSquare(e.getX(), e.getY());
-				} catch (Exception o) {									// if the piece is released outside the board, action taken as to remove the piece as if fallen of the table
+				} catch (Exception o) {							// if the piece is released outside the board, action taken as to remove the piece as if has fallen off the table
 					System.out.println("Piece went out of bound");
 					Focused_sq.Remove_Piece(Focused_piece);
 					Focused_sq = null;
@@ -176,7 +166,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 					return;
 				}
 		
-				if (Focused_sq.getInnerPiece() == null && Focused_piece != null) {
+				if (Focused_sq.getInnerPiece() == null) {	// Free square
 					x_pos = Math.ceilDiv(e.getX(), (BOARD_SIZE/DIMENSION));
 					y_pos = Math.ceilDiv(e.getY(), (BOARD_SIZE/DIMENSION));
 					
@@ -184,7 +174,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 					
 					this.repaint();
 				}
-				else if(Focused_sq.getInnerPiece().isWhite == Focused_piece.isWhite) {
+				else if(Focused_sq.getInnerPiece().isWhite == Focused_piece.isWhite) {	// Piece got same color
 					x_pos = Math.ceilDiv(e.getX(), (BOARD_SIZE/DIMENSION));
 					y_pos = Math.ceilDiv(e.getY(), (BOARD_SIZE/DIMENSION));
 					
@@ -192,7 +182,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 					
 					this.repaint();
 				}
-				else if (Focused_sq.getInnerPiece().isWhite != Focused_piece.isWhite)	{
+				else if (Focused_sq.getInnerPiece().isWhite != Focused_piece.isWhite)	{ // Piece got different color
 					Focused_sq.Remove_Piece(Focused_sq.getInnerPiece());
 					
 					Focused_sq.Set_Piece(Focused_piece);
