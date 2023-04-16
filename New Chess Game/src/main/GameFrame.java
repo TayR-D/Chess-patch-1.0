@@ -6,7 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class GameFrame extends JFrame implements ActionListener{		
-	private Board board = new Board();
+	private JPanel board = new Board();         // implicit casting
 	private SidePanel Side_panel = new SidePanel();
 	
     private ImageIcon FrameIcon = new ImageIcon("New Chess Game/res/GameIcon/BlackHorse_GameIcon.png");

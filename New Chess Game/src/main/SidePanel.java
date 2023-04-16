@@ -85,7 +85,7 @@ public class SidePanel extends JPanel implements ActionListener{
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (turnCircle_pos != 0 && duration != 0){
-			Graphics2D g2d = (Graphics2D) g; // Explicit casting
+			Graphics2D g2d = (Graphics2D) g; 		// Explicit casting
 			g2d.setStroke(new BasicStroke(3));
 			g2d.setColor(Color.GREEN);
 			g2d.drawOval((WIDTH - 30) / 2, turnCircle_pos, 30, 30);
@@ -112,8 +112,6 @@ public class SidePanel extends JPanel implements ActionListener{
 			case "15 Min": l = 15 *60000; 
 				break;
 			case "30 Min": l = 30 * 60000;
-				break;
-			case "60 Min": l = 60 * 60000;
 				break;
 			default:
 				break;

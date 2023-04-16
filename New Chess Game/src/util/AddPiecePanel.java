@@ -3,6 +3,8 @@ package util;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.*;
 
@@ -10,7 +12,7 @@ import main.Board;
 import main.Pieces;
 import pieces.*;
 
-public class AddPiecePanel extends JPanel implements ActionListener{
+public class AddPiecePanel extends JPanel implements ActionListener, ItemListener{
     private JButton addWhitePiece_btn = new JButton("Add White Piece");
     private JButton addBlackPiece_btn = new JButton("Add Black Piece");
     private JButton ok_btn = new JButton("OK");
@@ -45,12 +47,12 @@ public class AddPiecePanel extends JPanel implements ActionListener{
         // register listener
         addWhitePiece_btn.addActionListener(this);
         addBlackPiece_btn.addActionListener(this);
-        king_Choice.addActionListener(this);
-        queen_Choice.addActionListener(this);
-		rook_Choice.addActionListener(this);
-		bishop_Choice.addActionListener(this);
-		horse_Choice.addActionListener(this);
-		pawn_Choice.addActionListener(this);
+        king_Choice.addItemListener(this);
+        queen_Choice.addItemListener(this);
+		rook_Choice.addItemListener(this);
+		bishop_Choice.addItemListener(this);
+		horse_Choice.addItemListener(this);
+		pawn_Choice.addItemListener(this);
         ok_btn.addActionListener(this);
     }
 
@@ -99,60 +101,6 @@ public class AddPiecePanel extends JPanel implements ActionListener{
                 addChoices();;
                 break;
 
-            case "King":
-                try {
-                    addPieceToBoard(new King(isWhite));
-                    break;
-                } catch (NullPointerException o) {
-                    warnPlayer();
-                    break;
-            }
-
-            case "Queen":
-                try {
-                    addPieceToBoard(new Queen(isWhite));
-                    break;
-                } catch (NullPointerException o) {
-                    warnPlayer();
-                    break;
-                }
-
-            case "Rook":
-            try {
-                addPieceToBoard(new Rook(isWhite));
-                break;
-            } catch (NullPointerException o) {
-                warnPlayer();
-                break;
-            }
-
-            case "Bishop":
-            try {
-                addPieceToBoard(new Bishop(isWhite));
-                break;
-            } catch (NullPointerException o) {
-                warnPlayer();
-                break;
-            }
-
-            case "Horse":
-            try {
-                addPieceToBoard(new Horse(isWhite));
-                break;
-            } catch (NullPointerException o) {
-                warnPlayer();
-                break;
-            } 
-
-            case "Pawn":
-            try {
-                addPieceToBoard(new Pawn(isWhite));
-                break;
-            } catch (NullPointerException o) {
-                warnPlayer();
-                break;
-            } 
-
             case "OK":
                 this.removeAll();
                 this.add(addWhitePiece_btn);
@@ -162,5 +110,52 @@ public class AddPiecePanel extends JPanel implements ActionListener{
             default:
                 break;
         }
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED)
+            if (e.getSource() == king_Choice){
+                try {
+                    addPieceToBoard(new King(isWhite));
+                } catch (NullPointerException o) {
+                    warnPlayer();
+                }
+            }
+            else if (e.getSource() == queen_Choice){
+                try {
+                    addPieceToBoard(new Queen(isWhite));
+                } catch (NullPointerException o) {
+                    warnPlayer();
+                }
+            }
+            else if (e.getSource() == rook_Choice){
+                try {
+                    addPieceToBoard(new Rook(isWhite));
+                } catch (NullPointerException o) {
+                    warnPlayer();
+                }
+            }
+            else if (e.getSource() == horse_Choice){
+                try {
+                    addPieceToBoard(new Horse(isWhite));
+                } catch (NullPointerException o) {
+                    warnPlayer();
+                }
+            }
+            else if (e.getSource() == bishop_Choice){
+                try {
+                    addPieceToBoard(new Bishop(isWhite));
+                } catch (NullPointerException o) {
+                    warnPlayer();
+                }
+            }
+            else if (e.getSource() == pawn_Choice){
+                try {
+                    addPieceToBoard(new Pawn(isWhite));
+                } catch (NullPointerException o) {
+                    warnPlayer();
+                }
+            }
     }
 }
