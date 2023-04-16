@@ -5,4 +5,6 @@ This project is my take on making a Chess game. I made it so that the piece are 
 though some basic Chess rules is still present i.e a white piece will still kill a black piece when taking the black piece's square and vice versa.
 In addition, I made a side panel with options like a chess clock, the ability to add extra piece to the board, and a reset button. 
 
+Any sugestion to change anyhthing will gladdly accepted 
+
 Hope you enjoy.
