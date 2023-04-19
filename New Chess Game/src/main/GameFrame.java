@@ -9,7 +9,7 @@ public class GameFrame extends JFrame implements ActionListener{
 	private JPanel board = new Board();         // implicit casting
 	private SidePanel Side_panel = new SidePanel();
 	
-    private ImageIcon FrameIcon = new ImageIcon("New Chess Game/res/GameIcon/BlackHorse_GameIcon.png");
+    private ImageIcon FrameIcon = new ImageIcon("res/GameIcon/BlackHorse_GameIcon.png");
     
     public GameFrame(){
         // CreateFrame

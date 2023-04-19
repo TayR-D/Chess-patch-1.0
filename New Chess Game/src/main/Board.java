@@ -118,6 +118,23 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
     	Focused_sq = getSquare(row, col);
     }
 
+	private void printMoveAction(String action){
+		String act = "";
+		switch (action.toLowerCase()) {
+			case "move":
+				System.out.println(Focused_piece.getPieceName() + " " + Focused_sq.getSqareName());
+				break;
+			case "take":
+				act = "x";
+				System.out.println(Focused_piece.getPieceName() + " " + act +Focused_sq.getSqareName());
+				break;
+			default:
+				break;
+		
+		}
+	}
+
+	// Graphics and listener
     public void paint(Graphics g) {
     	super.paint(g);
     	if (Focused_piece != null) {
@@ -158,7 +175,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 			if (Focused_piece != null){
 				try {
 					checkSquare(e.getX(), e.getY());
-				} catch (Exception o) {							// if the piece is released outside the board, action taken as to remove the piece as if has fallen off the table
+				} catch (Exception o) {							// if the piece is released outside the board panel area, action taken as to remove the piece as if has fallen off the table
 					System.out.println("Piece went out of bound");
 					Focused_sq.Remove_Piece(Focused_piece);
 					Focused_sq = null;
@@ -171,7 +188,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 					y_pos = Math.ceilDiv(e.getY(), (BOARD_SIZE/DIMENSION));
 					
 					Focused_sq.Set_Piece(Focused_piece);
-					
+					printMoveAction("move");
 					this.repaint();
 				}
 				else if(Focused_sq.getInnerPiece().isWhite == Focused_piece.isWhite) {	// Piece got same color
@@ -186,7 +203,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 					Focused_sq.Remove_Piece(Focused_sq.getInnerPiece());
 					
 					Focused_sq.Set_Piece(Focused_piece);
-					
+					printMoveAction("take");
 					this.repaint();
 				}
 
@@ -209,4 +226,6 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 
 	@Override
 	public void mouseExited(MouseEvent e) {}
+
+	
 }

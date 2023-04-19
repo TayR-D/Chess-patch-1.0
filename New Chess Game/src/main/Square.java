@@ -9,6 +9,9 @@ public class Square extends JPanel{
     private int col;
     
     private Pieces innerPiece;
+	private String SqaureName;
+
+	char[] file = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 	
 	public Square(int row, int col){
 		this.setLayout(new BorderLayout());
@@ -52,5 +55,40 @@ public class Square extends JPanel{
 	
 	public int getCol() {
 		return col;
+	}
+
+	public int getRank(){
+		if (row == 1)
+			return 8;
+
+		if (row == 2)
+			return 7;
+
+		if (row == 3)
+			return 6;
+
+		if (row == 4)
+			return 5;
+
+		if (row == 5)
+			return 4;
+
+		if (row == 6)
+			return 3;
+
+		if (row == 7)
+			return 2;
+
+		if (row == 8)
+			return 1;
+
+		else return 0;
+	}
+
+	public String getSqareName(){
+		char file = this.file[col - 1];
+		int rank = getRank();
+		SqaureName = file + "" + rank;
+		return SqaureName;
 	}
 }

@@ -23,10 +23,14 @@ public class SidePanel extends JPanel implements ActionListener{
 
 	private JComboBox<String> Game_duration_cb = new JComboBox<>();
 	private long duration;
+	private int increment;
 
 	private AddPiecePanel AddPiece_pn = new AddPiecePanel();
 
 	private int turnCircle_pos;
+
+	private int move_count = 0;
+	private JLabel moveCount_jlb;
 	
 	SidePanel(){		
 		this.setLayout(null);
@@ -40,12 +44,13 @@ public class SidePanel extends JPanel implements ActionListener{
 
 		// set game duration
 		Game_duration_cb.addItem("Choose Game Length");
-		Game_duration_cb.addItem("1 Min");
-		Game_duration_cb.addItem("3 Min");
-		Game_duration_cb.addItem("5 Min");
-		Game_duration_cb.addItem("10 Min");
-		Game_duration_cb.addItem("15 Min");
-		Game_duration_cb.addItem("30 Min");
+		Game_duration_cb.addItem("1 Min | +1s");
+		Game_duration_cb.addItem("3 Min | +0s");
+		Game_duration_cb.addItem("3 Min | +2s");
+		Game_duration_cb.addItem("5 Min | +5s");
+		Game_duration_cb.addItem("10 Min | +0s");
+		Game_duration_cb.addItem("15 Min | +10s");
+		Game_duration_cb.addItem("30 Min | +0s");
 		this.add(Game_duration_cb);
 		Game_duration_cb.setBounds((WIDTH - Game_duration_cb.getPreferredSize().width)/ 2, 4*(WIDTH/2) + 18, Game_duration_cb.getPreferredSize().width, Game_duration_cb.getPreferredSize().height);
 		
@@ -72,6 +77,10 @@ public class SidePanel extends JPanel implements ActionListener{
 		this.add(AddPiece_pn);
 		AddPiece_pn.setLocation((WIDTH - AddPiece_pn.getSize().width) /2, 3*(WIDTH/2) - (AddPiece_pn.getSize().height / 2) - 35);
 
+		// Move counter
+		moveCount_jlb = new JLabel("Move: " + move_count);
+		moveCount_jlb.setBounds(150, 0, 50, 20);
+		this.add(moveCount_jlb);
 
 		// Register Listener
 		Reset_btn.addActionListener(this);
@@ -97,32 +106,49 @@ public class SidePanel extends JPanel implements ActionListener{
 		this.remove(StartBlackTimer_btn);
 		this.add(StartWhiteTimer_btn);
 	}
+
+	private void innitializeMoveCounter(){
+		move_count = 0;
+		moveCount_jlb.setText("Move : 0");
+	}
 	
-	public long getDuration(String d) {
-		long l = 0;
+	public void setClock(String d) {
 		switch(d) {
-			case "1 Min": l = 60000; 
+			case "1 Min | +1s": 
+				duration = 60000; 
+				increment = 1000;
 				break;
-			case "3 Min": l = 3 * 60000;
+			case "3 Min | +0s": 
+				duration = 3 * 60000;
+				increment = 0;
 				break;
-			case "5 Min": l = 5 * 60000;
+			case "3 Min | +2s": 
+				duration = 3 * 60000;
+				increment = 2000;
 				break;
-			case "10 Min": l = 10 * 60000;
+			case "5 Min | +5s": 
+				duration = 5 * 60000;
+				increment = 5000;
 				break;
-			case "15 Min": l = 15 *60000; 
+			case "10 Min | +0s": 
+				duration = 10 * 60000;
+				increment = 0;
 				break;
-			case "30 Min": l = 30 * 60000;
+			case "15 Min | +10s": 
+				duration = 15 *60000;
+				increment = 10000;
+				break;
+			case "30 Min | +0s": 
+				duration = 30 * 60000;
+				increment = 0;
 				break;
 			default:
 				break;
 		}
-		
-		return l;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		if (e.getSource() == Reset_btn){
 			turnCircle_pos = 0;
 			duration = 0;
@@ -130,15 +156,18 @@ public class SidePanel extends JPanel implements ActionListener{
 			Black_timer.setDuration(duration);
 			Game_duration_cb.setSelectedIndex(0);
 			
+			innitializeMoveCounter();
 			innitializeTurnBtn();
 			this.repaint();
 		}
 
 		if (e.getSource() == Game_duration_cb) {
 			turnCircle_pos = 0;
-			duration  = getDuration(Game_duration_cb.getSelectedItem().toString());
+			setClock(Game_duration_cb.getSelectedItem().toString());
 			White_timer.setDuration(duration);
+			White_timer.setIncrement(increment);
 			Black_timer.setDuration(duration);
+			Black_timer.setIncrement(increment);
 
 			White_timer.stopTimer();
 			Black_timer.stopTimer();
@@ -150,9 +179,12 @@ public class SidePanel extends JPanel implements ActionListener{
 				this.remove(StartBlackTimer_btn);
 				this.add(StartWhiteTimer_btn);
 			}
-			White_timer.stopTimer();			
+			White_timer.stopTimer();
+			White_timer.incTime();			
 			Black_timer.startTimer();
-
+			// turn start
+			move_count += 1;
+			moveCount_jlb.setText("Move: " + move_count);
 			turnCircle_pos = 1*(WIDTH - 30) / 2 - 40;
 			repaint();
 		}
@@ -162,9 +194,11 @@ public class SidePanel extends JPanel implements ActionListener{
 				this.remove(StartWhiteTimer_btn);
 				this.add(StartBlackTimer_btn);
 			}
-			Black_timer.stopTimer();			
+			Black_timer.stopTimer();
+			if (move_count >  0)
+				Black_timer.incTime();	
 			White_timer.startTimer();
-
+			
 			turnCircle_pos = 8*(WIDTH - 30) / 2 +40;
 			repaint();
 		}
