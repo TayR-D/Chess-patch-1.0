@@ -11,7 +11,7 @@ public class Square extends JPanel{
     private Pieces innerPiece;
 	private String SqaureName;
 
-	char[] file = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+	private char[] file = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 	
 	public Square(int row, int col){
 		this.setLayout(new BorderLayout());

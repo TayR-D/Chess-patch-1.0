@@ -12,7 +12,7 @@ public class ChessTimer extends JLabel implements ActionListener{
     private long duration;
 	private int increment;
 	
-	public Timer timer = new Timer(1, this);
+	private Timer timer = new Timer(200, this);
 	private SimpleDateFormat df= new SimpleDateFormat("mm:ss");
 	
 	public ChessTimer(){
@@ -38,7 +38,7 @@ public class ChessTimer extends JLabel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
         if (duration > 0) {
-        	duration -= 15; // duration set to -15(ms) although timer tick every 1ms, suspected that my laptop or java swing itself only update at ~10ms
+        	duration -= 1000;
         }else {timer.stop();}
 		
 		this.setText(df.format(duration));

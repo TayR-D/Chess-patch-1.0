@@ -22,7 +22,7 @@ public class SidePanel extends JPanel implements ActionListener{
 	private ChessTimer Black_timer = new ChessTimer();
 
 	private JComboBox<String> Game_duration_cb = new JComboBox<>();
-	private long duration;
+	private long duration = 0;				// implicit casting (int -> long)
 	private int increment;
 
 	private AddPiecePanel AddPiece_pn = new AddPiecePanel();
@@ -94,11 +94,11 @@ public class SidePanel extends JPanel implements ActionListener{
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (turnCircle_pos != 0 && duration != 0){
-			Graphics2D g2d = (Graphics2D) g; 		// Explicit casting
+			Graphics2D g2d = (Graphics2D) g; 		// Explicit casting (Graphics -> Graphics2D)
 			g2d.setStroke(new BasicStroke(3));
 			g2d.setColor(Color.GREEN);
 			g2d.drawOval((WIDTH - 30) / 2, turnCircle_pos, 30, 30);
-			g2d.setStroke(new BasicStroke()); // set stroke back to defualt (only applying stroke size to oval and not all other components)
+			g2d.setStroke(new BasicStroke()); // set stroke back to defualt (only applying stroke size to the oval and not all other components)
 		}
 	}
 
